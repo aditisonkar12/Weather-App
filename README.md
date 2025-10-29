@@ -22,3 +22,31 @@ A simple and user-friendly Weather Application built using **HTML, CSS, and Java
 ## 🖼️ Preview
 _Add a screenshot of your project UI here later._
 
+---
+
+## 🛠️ Tech Stack
+| Technology | Purpose |
+|-------------|----------|
+| HTML        | Structure |
+| CSS         | Styling |
+| JavaScript  | Logic and API integration |
+| OpenWeatherMap API | Weather data |
+
+---
+
+## 📂 Folder Structure
+
+Weather-App/
+│
+├── assets/
+│ ├── cloud.png
+│ ├── clear.png
+│ ├── rain.png
+│ ├── mist.png
+│ ├── snow.png
+│ └── 404.png
+├── index.html
+├── style.css
+├── script.js
+└── README.md
+
