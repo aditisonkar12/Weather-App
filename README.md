@@ -61,7 +61,7 @@ Weather-App/
 
 ## 🔑 API Used
 This project uses the OpenWeatherMap API to fetch real-time weather data.
-API Link: https://openweathermap.org/api
+API Link: https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}
 
 ## 🔮 Future Enhancements
 - Improve responsive design
