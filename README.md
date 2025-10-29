@@ -37,11 +37,10 @@ _Add a screenshot of your project UI here later._
 ## 📂 Folder Structure
 
 Weather-App/
-│
-├── assets/
-│ ├── cloud.png
-│ ├── clear.png
-│ ├── rain.png
+- assets/
+- - cloud.png
+- - clear.png
+- -rain.png
 │ ├── mist.png
 │ ├── snow.png
 │ └── 404.png
@@ -61,7 +60,7 @@ Weather-App/
 
 ## 🔑 API Used
 This project uses the OpenWeatherMap API to fetch real-time weather data.
-API Link: https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}
+API Link: https://openweathermap.org/api
 
 ## 🔮 Future Enhancements
 - Improve responsive design
