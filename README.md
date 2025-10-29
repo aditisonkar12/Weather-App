@@ -38,16 +38,16 @@ _Add a screenshot of your project UI here later._
 
 Weather-App/
 - assets/
-- - cloud.png
-- - clear.png
-- -rain.png
-│ ├── mist.png
-│ ├── snow.png
-│ └── 404.png
-├── index.html
-├── style.css
-├── script.js
-└── README.md
+    - cloud.png
+    - clear.png
+    - rain.png
+    - mist.png
+    - snow.png
+    - 404.png
+- index.html
+- style.css
+- script.js
+- README.md
 
 ---
 
