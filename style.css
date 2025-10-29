@@ -25,6 +25,7 @@ body{
   padding:22px;
   box-shadow: 0 8px 30px rgba(2,6,12,0.6);
   border: 1px solid rgba(255,255,255,0.03);
+  overflow: hidden; /* ✅ Prevent content breaking outside */
 }
 
 .header{
@@ -105,19 +106,34 @@ body{
   margin-top:18px;
   align-items:center;
   text-align:center;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
 }
-.weather-img{ width:42%; max-width:150px; display:block; margin:0 auto 8px }
+
+.weather-box{
+  width:100%;
+}
+
+.weather-img{
+  width:120px;
+  margin:0 auto;
+  display:block;
+}
+
 .weather-box .temperature{
   font-size:36px;
   font-weight:700;
   margin-bottom:6px;
 }
+
 .weather-box .description{
   text-transform:capitalize;
   color:var(--muted);
   margin-bottom:6px;
   font-weight:600;
 }
+
 .city-country{
   color:var(--muted);
   font-size:13px;
@@ -128,7 +144,9 @@ body{
   justify-content:space-between;
   gap:12px;
   margin-top:14px;
+  width:100%;
 }
+
 .humidity,.wind{
   display:flex;
   align-items:center;
@@ -138,6 +156,7 @@ body{
   border-radius:10px;
   flex:1;
 }
+
 .icon{font-size:20px}
 .text p{ color:var(--muted); font-size:12px; margin-top:4px }
 .text span{ font-weight:700; font-size:16px; display:block }
@@ -150,6 +169,6 @@ body{
 
 @media (max-width:420px){
   .container{ padding:18px }
-  .weather-img{ width:50% }
+  .weather-img{ width:100px }
   .weather-details{ flex-direction:column; gap:8px }
 }
