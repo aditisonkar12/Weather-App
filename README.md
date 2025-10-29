@@ -50,3 +50,17 @@ Weather-App/
 ├── script.js
 └── README.md
 
+---
+
+## ⚙️ How to Run Locally
+1. Clone this repository: git clone https://github.com/your-username/Weather-App.git
+
+2. Go to the project folder: cd Weather-App
+
+3. Open index.html in your browser to run the app.
+
+## 🔑 API Used
+
+This project uses the OpenWeatherMap API to fetch real-time weather data.
+API Link: https://openweathermap.org/api
+
