@@ -16,3 +16,9 @@ A simple and user-friendly Weather Application built using **HTML, CSS, and Java
 - Dynamic weather images
 - Handles invalid city errors
 - Clean and simple user interface
+
+---
+
+## 🖼️ Preview
+_Add a screenshot of your project UI here later._
+
