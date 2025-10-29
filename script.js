@@ -1,5 +1,4 @@
 const api_key = "fa38d622a1fc48157b026a42eea32e30";
-const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`;
 
 const inputBox = document.querySelector('.input-box');
 const searchBtn = document.getElementById('searchBtn');
@@ -30,7 +29,7 @@ function showWeatherBody(show = true) {
 }
 
 function setBackgroundForMain(condition = '') {
-  const lower = (condition || '').toLowerCase();
+  const lower = condition.toLowerCase();
   container.classList.remove('bg-clear','bg-clouds','bg-rain','bg-mist','bg-snow');
 
   if (lower.includes('clear')) container.classList.add('bg-clear');
@@ -42,46 +41,13 @@ function setBackgroundForMain(condition = '') {
 }
 
 function pickLocalIcon(condition = '') {
-  const lower = (condition || '').toLowerCase();
+  const lower = condition.toLowerCase();
   if (lower.includes('clear')) return 'assets/clear.png';
   if (lower.includes('cloud')) return 'assets/cloud.png';
   if (lower.includes('rain') || lower.includes('drizzle') || lower.includes('thunder')) return 'assets/rain.png';
   if (lower.includes('mist') || lower.includes('fog') || lower.includes('haze')) return 'assets/mist.png';
   if (lower.includes('snow')) return 'assets/snow.png';
   return 'assets/cloud.png';
-}
-
-async function fetchJSON(url, options = {}) {
-  try {
-    const res = await fetch(url, options);
-    if (!res.ok) {
-      return { error: true, status: res.status, ok: false, data: null };
-    }
-    const data = await res.json();
-    return { error: false, ok: true, data };
-  } catch (err) {
-    return { error: true, ok: false, message: err.message || 'fetch error' };
-  }
-}
-
-async function fetchOpenWeather(city) {
-  if (!OPENWEATHER_API_KEY) return { ok: false, error: true, message: 'No OpenWeather key' };
-
-  const q = encodeURIComponent(city.trim());
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${q}&units=metric&appid=${OPENWEATHER_API_KEY}`;
-  const result = await fetchJSON(url);
-  if (result.ok && result.data) return { ok: true, source: 'openweather', data: result.data };
-  return { ok: false, source: 'openweather', result };
-}
-
-async function fetchWeatherAPIcom(city) {
-  if (!WEATHERAPI_KEY) return { ok: false, error: true, message: 'No WeatherAPI key' };
-
-  const q = encodeURIComponent(city.trim());
-  const url = `https://api.weatherapi.com/v1/current.json?key=${WEATHERAPI_KEY}&q=${q}&aqi=no`;
-  const result = await fetchJSON(url);
-  if (result.ok && result.data) return { ok: true, source: 'weatherapi', data: result.data };
-  return { ok: false, source: 'weatherapi', result };
 }
 
 async function checkWeather(city) {
@@ -92,90 +58,43 @@ async function checkWeather(city) {
 
   showNotFound(false);
   showWeatherBody(false);
-  showLoader(true, 'Fetching weather...');
+  showLoader(true, 'Loading weather...');
 
-  const primary = await fetchOpenWeather(city);
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}&units=metric`;
 
-  let final = null;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error('City not found');
 
-  if (primary.ok) {
-    final = { source: primary.source, payload: primary.data };
-  } else {
-    statusText.textContent = 'Primary API failed, trying fallback...';
-    const fallback = await fetchWeatherAPIcom(city);
-    if (fallback.ok) final = { source: fallback.source, payload: fallback.data };
-    else {
-      showLoader(false);
-      showNotFound(true);
-      statusText.textContent = 'Could not fetch weather data. Check your API keys or try later.';
-      return;
-    }
-  }
+    const d = await response.json();
 
-  showLoader(false);
-  showNotFound(false);
+    temperature.textContent = `${Math.round(d.main.temp)}°C`;
+    description.textContent = d.weather[0].description;
+    humidity.textContent = `${d.main.humidity}%`;
+    wind_speed.textContent = `${d.wind.speed} Km/H`;
+    cityCountry.textContent = `${d.name}, ${d.sys.country}`;
 
-  if (final.source === 'openweather') {
-    const d = final.payload;
-    if (d.cod === '404' || d.cod === 404) {
-      showNotFound(true);
-      statusText.textContent = 'Location not found';
-      return;
-    }
+    weather_img.src = pickLocalIcon(d.weather[0].main);
+    setBackgroundForMain(d.weather[0].main);
 
-    const temp = Math.round(d.main.temp); 
-    const descr = d.weather[0].description || '';
-    const mainCond = d.weather[0].main || descr;
-    const hum = d.main.humidity;
-    const wind = d.wind && d.wind.speed ? d.wind.speed : '--';
-    const country = d.sys && d.sys.country ? d.sys.country : '';
-    const cityName = d.name || city;
-
-    temperature.textContent = `${temp}°C`;
-    description.textContent = descr;
-    humidity.textContent = `${hum}%`;
-    wind_speed.textContent = `${wind} Km/H`;
-    cityCountry.textContent = `${cityName}${country ? ', ' + country : ''}`;
-
-    weather_img.src = pickLocalIcon(mainCond);
-    weather_img.alt = mainCond;
-    setBackgroundForMain(mainCond);
+    showLoader(false);
     showWeatherBody(true);
 
-  } else if (final.source === 'weatherapi') {
-    const d = final.payload;
-    const temp = Math.round(d.current.temp_c);
-    const descr = d.current.condition && d.current.condition.text ? d.current.condition.text : '';
-    const hum = d.current.humidity;
-    const wind = d.current.wind_kph ? Math.round(d.current.wind_kph) : '--';
-    const cityName = d.location && d.location.name ? d.location.name : city;
-    const country = d.location && d.location.country ? d.location.country : '';
-
-    temperature.textContent = `${temp}°C`;
-    description.textContent = descr;
-    humidity.textContent = `${hum}%`;
-    wind_speed.textContent = `${wind} Km/H`;
-    cityCountry.textContent = `${cityName}${country ? ', ' + country : ''}`;
-
-    weather_img.src = pickLocalIcon(descr);
-    weather_img.alt = descr;
-    setBackgroundForMain(descr);
-    showWeatherBody(true);
+  } catch (error) {
+    showLoader(false);
+    showNotFound(true);
+    statusText.textContent = 'City not found. Try again!';
   }
 }
 
 searchBtn.addEventListener('click', () => {
-  const city = inputBox.value;
-  checkWeather(city);
+  checkWeather(inputBox.value);
   inputBox.value = '';
 });
 
-inputBox.addEventListener('keydown', (ev) => {
-  if (ev.key === 'Enter') {
-    const city = inputBox.value;
-    checkWeather(city);
+inputBox.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    checkWeather(inputBox.value);
     inputBox.value = '';
   }
 });
-
-
