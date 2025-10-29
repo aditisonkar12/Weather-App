@@ -60,7 +60,24 @@ Weather-App/
 3. Open index.html in your browser to run the app.
 
 ## 🔑 API Used
-
 This project uses the OpenWeatherMap API to fetch real-time weather data.
 API Link: https://openweathermap.org/api
+
+## 🔮 Future Enhancements
+- Improve responsive design
+- Add weather by current location
+- Show 5-day weather forecast
+- Add loading animation
+- Add temperature unit toggle (°C/°F)
+- Save search history
+- Deploy live demo
+- Add backend support
+
+## 🙌 Acknowledgements
+- OpenWeatherMap for weather API
+
+## ⭐ Support
+If you liked this project, please give it a star ⭐ on GitHub!
+
+
 
